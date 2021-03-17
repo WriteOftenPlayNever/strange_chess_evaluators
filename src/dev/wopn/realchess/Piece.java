@@ -16,6 +16,9 @@ public class Piece {
             "P", "N", "B", "R", "Q", "K", ".", ".",
             "p", "n", "b", "r", "q", "k"};
 
+    public static byte invert(byte piece) {
+        return (byte) (piece < 8 ? piece + 8 : piece - 8);
+    }
 
 
 }

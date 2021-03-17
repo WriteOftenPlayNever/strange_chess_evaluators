@@ -27,7 +27,8 @@ public class Board {
 
         if (piece == 0) {
             return null;
-        } else if (piece == 1) {
+        }
+        else if (piece == 1) {
             for (byte targetIndex : mData.whitePawnMoves[index]) {
                 byte target = board[targetIndex];
                 boolean isPush = (coords[0] - coordConversion(targetIndex)[0]) == 2;
@@ -159,6 +160,14 @@ public class Board {
         }
 
         return moves;
+    }
+
+    public int getPlies() {
+        return plies;
+    }
+
+    public List<Move> getHistoryList() {
+        return historyList;
     }
 
     public static int[] coordConversion(byte index) {

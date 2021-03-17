@@ -2,10 +2,16 @@ package dev.wopn.realchess;
 
 public abstract class EvaluatorComponent {
 
-    private byte pieceType;
-    private int[] pieceValues;
-    private float[] tuningValues;
+    protected byte pieceType;
+    protected int[] pieceValues;
+    protected float[] tuningValues;
 
-    public abstract int evaluate(byte[] board);
+    protected EvaluatorComponent(byte pieceType, int[] pieceValues, float[] tuningValues) {
+        this.pieceType = pieceType;
+        this.pieceValues = pieceValues;
+        this.tuningValues = tuningValues;
+    }
+
+    public abstract int evaluate(Board board);
 
 }
