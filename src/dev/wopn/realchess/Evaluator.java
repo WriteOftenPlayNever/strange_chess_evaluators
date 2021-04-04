@@ -1,6 +1,5 @@
 package dev.wopn.realchess;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -19,8 +18,15 @@ public class Evaluator {
     }
 
     public int evaluate(Board board) {
+        float eval = 0.0f;
 
-        return 0;
+        for (List<EvaluatorComponent> x : pieceLookup.values()) {
+            for (EvaluatorComponent ec : x) {
+                eval += ec.evaluate(board);
+            }
+        }
+
+        return (int) eval;
     }
 
 }

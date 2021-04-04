@@ -6,11 +6,12 @@ import dev.wopn.realchess.MoveData;
 
 import java.util.Random;
 
-public class FileCountComponent extends EvaluatorComponent {
+public class RankCountComponent extends EvaluatorComponent {
+
 
     private byte targetType;
 
-    public FileCountComponent(byte pieceType, int[] pieceValues, float[] tuningValues, byte targetType) {
+    public RankCountComponent(byte pieceType, int[] pieceValues, float[] tuningValues, byte targetType) {
         super(pieceType, pieceValues, tuningValues);
         this.targetType = targetType;
     }
@@ -24,7 +25,7 @@ public class FileCountComponent extends EvaluatorComponent {
             byte piece = board.board[index];
 
             if (piece == pieceType || piece == (pieceType + 8)) {
-                for (int direction = 0; direction < 2; direction++) {
+                for (int direction = 2; direction < 4; direction++) {
                     for (int i = 0; i < (new MoveData().squaresToEdge[index][direction]); i++) {
                         byte target = board.board[index + (MoveData.DIRECTION_OFFSETS[direction] * (i + 1))];
 
@@ -40,12 +41,15 @@ public class FileCountComponent extends EvaluatorComponent {
             }
         }
 
+        System.out.println(wcount);
+        System.out.println(bcount);
+
         return (tuningValues[0] * (wcount - bcount));
     }
 
-    public static FileCountComponent generate(byte pieceType) {
+    public static RankCountComponent generate(byte pieceType) {
         Random r = new Random();
-        return new FileCountComponent(pieceType, new int[] {},
+        return new RankCountComponent(pieceType, new int[] {},
                 new float[] {r.nextFloat() * 150},
                 (byte) (r.nextInt(6) + (r.nextBoolean() ? 9 : 1)));
     }

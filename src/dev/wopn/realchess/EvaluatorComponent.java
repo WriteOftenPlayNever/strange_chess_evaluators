@@ -12,6 +12,6 @@ public abstract class EvaluatorComponent {
         this.tuningValues = tuningValues;
     }
 
-    public abstract int evaluate(Board board);
+    public abstract float evaluate(Board board);
 
 }

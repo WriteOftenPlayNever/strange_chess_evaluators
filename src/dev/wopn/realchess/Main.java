@@ -1,6 +1,9 @@
 package dev.wopn.realchess;
 
 
+import dev.wopn.realchess.components.DiagonalCountComponent;
+import dev.wopn.realchess.components.FileCountComponent;
+import dev.wopn.realchess.components.RankCountComponent;
 
 public class Main {
 
@@ -12,15 +15,13 @@ public class Main {
 
         System.out.println(testBoard);
 
-        testBoard.playMove(testBoard.getMoves().get(11));
-
-        testBoard.playMove(testBoard.getMoves().get(37));
+        testBoard.board[1] = (byte) 0;
 
         System.out.println(testBoard);
 
-        for (Move move : testBoard.getMoves()) {
-            System.out.println(move.toString());
-        }
+        DiagonalCountComponent FCC = new DiagonalCountComponent((byte) 2, new int[] {}, new float[] {30.0f}, (byte) 1);
+
+        System.out.println(FCC.evaluate(testBoard));
 
 
     }
