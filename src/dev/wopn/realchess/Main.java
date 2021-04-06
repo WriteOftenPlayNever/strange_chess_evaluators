@@ -1,9 +1,7 @@
 package dev.wopn.realchess;
 
 
-import dev.wopn.realchess.components.DiagonalCountComponent;
-import dev.wopn.realchess.components.FileCountComponent;
-import dev.wopn.realchess.components.RankCountComponent;
+import dev.wopn.realchess.components.CentreDistanceComponent;
 
 public class Main {
 
@@ -17,9 +15,13 @@ public class Main {
 
         testBoard.board[1] = (byte) 0;
 
+        testBoard.board[6] = (byte) 0;
+
+        testBoard.board[20] = (byte) 10;
+
         System.out.println(testBoard);
 
-        DiagonalCountComponent FCC = new DiagonalCountComponent((byte) 2, new int[] {}, new float[] {30.0f}, (byte) 1);
+        CentreDistanceComponent FCC = new CentreDistanceComponent((byte) 2, new int[] {}, new float[] {-30.0f});
 
         System.out.println(FCC.evaluate(testBoard));
 

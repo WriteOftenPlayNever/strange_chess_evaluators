@@ -4,6 +4,7 @@ import dev.wopn.realchess.Board;
 import dev.wopn.realchess.EvaluatorComponent;
 import dev.wopn.realchess.MoveData;
 
+import java.util.Arrays;
 import java.util.Random;
 
 public class DiagonalCountComponent extends EvaluatorComponent {
@@ -46,8 +47,17 @@ public class DiagonalCountComponent extends EvaluatorComponent {
     public static DiagonalCountComponent generate(byte pieceType) {
         Random r = new Random();
         return new DiagonalCountComponent(pieceType, new int[] {},
-                new float[] {r.nextFloat() * 150},
+                new float[] {(r.nextFloat() * 300) - 150},
                 (byte) (r.nextInt(6) + (r.nextBoolean() ? 9 : 1)));
     }
 
+    @Override
+    public String toString() {
+        return "DiagonalCountComponent{" +
+                "pieceType=" + pieceType +
+                ", pieceValues=" + Arrays.toString(pieceValues) +
+                ", tuningValues=" + Arrays.toString(tuningValues) +
+                ", targetType=" + targetType +
+                '}';
+    }
 }

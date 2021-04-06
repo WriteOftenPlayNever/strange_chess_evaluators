@@ -3,6 +3,7 @@ package dev.wopn.realchess.components;
 import dev.wopn.realchess.Board;
 import dev.wopn.realchess.EvaluatorComponent;
 
+import java.util.Arrays;
 import java.util.Random;
 
 public class BasicComponent extends EvaluatorComponent {
@@ -26,9 +27,18 @@ public class BasicComponent extends EvaluatorComponent {
         return eval;
     }
 
-    public static BasicComponent generate(byte pieceType, int[] pieceValues) {
+    public static BasicComponent generate(byte pieceType) {
         Random r = new Random();
-        return new BasicComponent(pieceType, pieceValues,
+        return new BasicComponent(pieceType, new int[] {},
                 new float[] {(r.nextFloat() * 16) - 8, r.nextFloat() * 100});
+    }
+
+    @Override
+    public String toString() {
+        return "BasicComponent{" +
+                "pieceType=" + pieceType +
+                ", pieceValues=" + Arrays.toString(pieceValues) +
+                ", tuningValues=" + Arrays.toString(tuningValues) +
+                '}';
     }
 }
