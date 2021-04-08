@@ -27,9 +27,11 @@ public class BasicComponent extends EvaluatorComponent {
         return eval;
     }
 
-    public static BasicComponent generate(byte pieceType) {
+    public static BasicComponent generate() {
         Random r = new Random();
-        return new BasicComponent(pieceType, new int[] {},
+        return new BasicComponent((byte) 0, new int[] {0, r.nextInt(1001), r.nextInt(1001),
+                r.nextInt(1001), r.nextInt(1001),
+                r.nextInt(1001), 20000},
                 new float[] {(r.nextFloat() * 16) - 8, r.nextFloat() * 100});
     }
 

@@ -1,5 +1,7 @@
 package dev.wopn.realchess;
 
+import java.util.Random;
+
 public abstract class EvaluatorComponent {
 
     protected byte pieceType;
@@ -13,5 +15,16 @@ public abstract class EvaluatorComponent {
     }
 
     public abstract float evaluate(Board board);
+
+    protected static int[] valueGenerator() {
+        Random r = new Random();
+        return new int[] {0,
+                r.nextInt(1001),
+                r.nextInt(1001),
+                r.nextInt(1001),
+                r.nextInt(1001),
+                r.nextInt(1001),
+                r.nextInt(1001)};
+    }
 
 }
