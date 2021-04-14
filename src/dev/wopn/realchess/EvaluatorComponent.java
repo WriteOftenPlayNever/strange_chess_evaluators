@@ -8,7 +8,7 @@ public abstract class EvaluatorComponent {
     protected int[] pieceValues;
     protected float[] tuningValues;
 
-    protected EvaluatorComponent(byte pieceType, int[] pieceValues, float[] tuningValues) {
+    public EvaluatorComponent(byte pieceType, int[] pieceValues, float[] tuningValues) {
         this.pieceType = pieceType;
         this.pieceValues = pieceValues;
         this.tuningValues = tuningValues;

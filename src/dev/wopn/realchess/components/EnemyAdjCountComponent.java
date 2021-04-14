@@ -60,8 +60,8 @@ public class EnemyAdjCountComponent extends EvaluatorComponent {
         return tuningValues[0] * eval;
     }
 
-    public static EnemyAdjCountComponent generate(byte pieceType) {
-        return new EnemyAdjCountComponent(pieceType, new int[] {},
+    public static EnemyAdjCountComponent generate() {
+        return new EnemyAdjCountComponent(Piece.random(), new int[] {},
                 new float[] {(new Random().nextFloat() * 200) - 100});
     }
 

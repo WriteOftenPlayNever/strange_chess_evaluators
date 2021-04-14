@@ -22,18 +22,19 @@ public class FavTilesValuesComponent extends EvaluatorComponent {
 
         for (int index : favouredTiles) {
             byte piece = board.board[index];
+            byte type = piece > 8 ? Piece.invert(piece) : piece;
 
             if (piece == pieceType) {
-                eval += pieceValues[piece];
+                eval += pieceValues[type];
             } else if (piece == Piece.invert(pieceType)) {
-                eval -= pieceValues[Piece.invert(piece)];
+                eval -= pieceValues[type];
             }
         }
 
         return tuningValues[0] * eval;
     }
 
-    public static FavTilesValuesComponent generate(byte pieceType) {
+    public static FavTilesValuesComponent generate() {
         Random r = new Random();
         int limit = r.nextInt(64);
         int[] tiles = new int[limit];
@@ -43,7 +44,7 @@ public class FavTilesValuesComponent extends EvaluatorComponent {
         }
 
         return new FavTilesValuesComponent(
-                pieceType,
+                Piece.random(),
                 EvaluatorComponent.valueGenerator(),
                 new float[] {(r.nextFloat() * 1) - 0.5f},
                 tiles

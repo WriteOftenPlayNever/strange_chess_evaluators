@@ -60,8 +60,8 @@ public class AllyAdjCountComponent extends EvaluatorComponent {
         return tuningValues[0] * eval;
     }
 
-    public static AllyAdjCountComponent generate(byte pieceType) {
-        return new AllyAdjCountComponent(pieceType, new int[] {},
+    public static AllyAdjCountComponent generate() {
+        return new AllyAdjCountComponent(Piece.random(), new int[] {},
                 new float[] {(new Random().nextFloat() * 200) - 100});
     }
 

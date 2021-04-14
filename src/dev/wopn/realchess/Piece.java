@@ -1,5 +1,7 @@
 package dev.wopn.realchess;
 
+import java.util.Random;
+
 public class Piece {
 
     public static final byte WHITE = 0;
@@ -20,5 +22,8 @@ public class Piece {
         return (byte) (piece < 8 ? piece + 8 : piece - 8);
     }
 
-
+    public static byte random() {
+        Random r = new Random();
+        return (byte) ((r.nextInt(6) + 1) + (r.nextBoolean() ? WHITE : BLACK));
+    }
 }

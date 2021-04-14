@@ -42,9 +42,9 @@ public class FileCountComponent extends EvaluatorComponent {
         return (tuningValues[0] * count);
     }
 
-    public static FileCountComponent generate(byte pieceType) {
+    public static FileCountComponent generate() {
         Random r = new Random();
-        return new FileCountComponent(pieceType, new int[] {},
+        return new FileCountComponent(Piece.random(), new int[] {},
                 new float[] {(r.nextFloat() * 300) - 150},
                 (byte) (r.nextInt(6) + (r.nextBoolean() ? 9 : 1)));
     }

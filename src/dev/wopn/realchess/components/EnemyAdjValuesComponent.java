@@ -61,8 +61,8 @@ public class EnemyAdjValuesComponent extends EvaluatorComponent {
         return tuningValues[0] * eval;
     }
 
-    public static EnemyAdjValuesComponent generate(byte pieceType) {
-        return new EnemyAdjValuesComponent(pieceType, EvaluatorComponent.valueGenerator(),
+    public static EnemyAdjValuesComponent generate() {
+        return new EnemyAdjValuesComponent(Piece.random(), EvaluatorComponent.valueGenerator(),
                 new float[] {(new Random().nextFloat() * 2) - 1});
     }
 

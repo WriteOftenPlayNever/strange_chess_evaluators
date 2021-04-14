@@ -42,9 +42,9 @@ public class DiagonalCountComponent extends EvaluatorComponent {
         return (tuningValues[0] * count);
     }
 
-    public static DiagonalCountComponent generate(byte pieceType) {
+    public static DiagonalCountComponent generate() {
         Random r = new Random();
-        return new DiagonalCountComponent(pieceType, new int[] {},
+        return new DiagonalCountComponent(Piece.random(), new int[] {},
                 new float[] {(r.nextFloat() * 300) - 150},
                 (byte) (r.nextInt(6) + (r.nextBoolean() ? 9 : 1)));
     }

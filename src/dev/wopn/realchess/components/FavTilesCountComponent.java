@@ -33,7 +33,7 @@ public class FavTilesCountComponent extends EvaluatorComponent {
         return tuningValues[0] * count;
     }
 
-    public static FavTilesCountComponent generate(byte pieceType) {
+    public static FavTilesCountComponent generate() {
         Random r = new Random();
         int limit = r.nextInt(64);
         int[] tiles = new int[limit];
@@ -43,7 +43,7 @@ public class FavTilesCountComponent extends EvaluatorComponent {
         }
 
         return new FavTilesCountComponent(
-                pieceType,
+                Piece.random(),
                 new int[] {},
                 new float[] {(r.nextFloat() * 300) - 150},
                 tiles

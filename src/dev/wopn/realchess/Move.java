@@ -20,9 +20,9 @@ public class Move {
 
     @Override
     public String toString() {
-        return "Piece:" + Piece.PIECE_CODES[moved] +
-                "\nMoved from: " + from + " to " + to +
-                " and took the " + Piece.PIECE_CODES[captured] +
-                (flag > 0 ? "\nThis move was a " + Move.FLAG_DECODE[flag] : "");
+        return Piece.PIECE_CODES[moved] +
+                " from " + from + " to " + to +
+                " and took " + Piece.PIECE_CODES[captured] +
+                (flag > 0 ? " - this move was a " + Move.FLAG_DECODE[flag] : "");
     }
 }

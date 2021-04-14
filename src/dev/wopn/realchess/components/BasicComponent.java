@@ -2,6 +2,7 @@ package dev.wopn.realchess.components;
 
 import dev.wopn.realchess.Board;
 import dev.wopn.realchess.EvaluatorComponent;
+import dev.wopn.realchess.Piece;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -17,10 +18,10 @@ public class BasicComponent extends EvaluatorComponent {
         int eval = 0;
 
         for (byte piece : board.board) {
-            if (piece == pieceType) {
+            if (piece < 8) {
                 eval += pieceValues[piece];
-            } else if (piece == (pieceType + 8)) {
-                eval -= pieceValues[piece];
+            } else {
+                eval -= pieceValues[Piece.invert(piece)];
             }
         }
 
@@ -32,7 +33,7 @@ public class BasicComponent extends EvaluatorComponent {
         return new BasicComponent((byte) 0, new int[] {0, r.nextInt(1001), r.nextInt(1001),
                 r.nextInt(1001), r.nextInt(1001),
                 r.nextInt(1001), 20000},
-                new float[] {(r.nextFloat() * 16) - 8, r.nextFloat() * 100});
+                new float[] {});
     }
 
     @Override

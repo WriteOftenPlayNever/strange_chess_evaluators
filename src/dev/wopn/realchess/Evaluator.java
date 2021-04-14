@@ -1,70 +1,146 @@
 package dev.wopn.realchess;
 
-import dev.wopn.realchess.components.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
 
-public class Evaluator {
+public class Evaluator implements Runnable {
 
-    private HashMap<Byte, List<EvaluatorComponent>> pieceLookup = new HashMap<>();
+    private List<EvaluatorComponent> components;
+    private Board evalBoard;
+    List<Move> givenMoves = new ArrayList<>();
+    Pair<Float, Move> bestMove = null;
 
-    public Evaluator() {
-        this.populate();
+    public Evaluator(List<EvaluatorComponent> components, Board evalBoard) {
+        this.components = components;
+        this.evalBoard = evalBoard;
     }
 
-    public Evaluator(HashMap<Byte, List<EvaluatorComponent>> pieceLookup) {
-        this.pieceLookup = pieceLookup;
+    public void setEvalBoard(Board evalBoard) {
+        this.evalBoard = evalBoard;
     }
 
-    public void populate() {
-        List<EvaluatorComponent> basic = new ArrayList<EvaluatorComponent>();
-        basic.add(BasicComponent.generate());
-        pieceLookup.put((byte) 0, basic);
+    public Board getEvalBoard() {
+        return evalBoard;
+    }
 
-        for (byte pieceType = 1; pieceType < 7; pieceType++) {
-            List<EvaluatorComponent> ecList = new ArrayList<>();
-            int limit = new Random().nextInt(8);
-            for (int i = 0; i < limit; i++) {
-                ecList.add(randomEC(pieceType));
-            }
-            pieceLookup.put(pieceType, ecList);
-        }
+    public Pair<Float, Move> getBestMove() {
+        return bestMove;
+    }
 
+    public void resetGivenMoves(List<Move> givenMoves) {
+        this.givenMoves = new ArrayList<>();
+    }
+
+    public void addMove(Move move) {
+        this.givenMoves.add(move);
     }
 
     public int evaluate(Board board) {
         float eval = 0.0f;
 
-        for (List<EvaluatorComponent> x : pieceLookup.values()) {
-            for (EvaluatorComponent ec : x) {
-                eval += ec.evaluate(board);
-            }
+        for (EvaluatorComponent ec : components) {
+            eval += ec.evaluate(board);
         }
 
         return (int) eval;
     }
 
-    private EvaluatorComponent randomEC(byte pieceType) {
-        EvaluatorComponent retVal = null;
-        int selector = new Random().nextInt(11);
-
-        switch (selector) {
-            case 1 -> retVal = FileCountComponent.generate(pieceType);
-            case 2 -> retVal = RankCountComponent.generate(pieceType);
-            case 3 -> retVal = DiagonalCountComponent.generate(pieceType);
-            case 4 -> retVal = AllyAdjCountComponent.generate(pieceType);
-            case 5 -> retVal = AllyAdjValuesComponent.generate(pieceType);
-            case 6 -> retVal = EnemyAdjCountComponent.generate(pieceType);
-            case 7 -> retVal = EnemyAdjValuesComponent.generate(pieceType);
-            case 8 -> retVal = CentreDistanceComponent.generate(pieceType);
-            case 9 -> retVal = FavTilesCountComponent.generate(pieceType);
-            case 10 -> retVal = FavTilesValuesComponent.generate(pieceType);
-        }
-
-        return retVal;
+    private float staticEvaluation(Board board) {
+        float evaluation = evaluate(board);
+        return board.getPlies() % 2 == Piece.WHITE ? evaluation : -evaluation;
     }
 
+    private float quiescence(Board board, float alpha, float beta, int depth) {
+        float staticEval = staticEvaluation(board);
+
+        if (depth == 0 || !board.gameOngoing) {
+            // This ensures more immediate checkmates are prioritised
+            // Prevents repetition in places where victory is assured
+            return (Math.max(depth, 1)) * staticEval;
+        }
+
+        if (staticEval >= beta) {
+            return beta;
+        }
+        if (staticEval > alpha) {
+            alpha = staticEval;
+        }
+
+        float eval;
+
+        ArrayList<Move> validMoves = new ArrayList<>(board.getMAD().attackList);
+        validMoves.removeIf(move ->
+                (move.captured > 8) == ((board.getPlies() % 2) == 0) ||
+                        move.captured == 1 || move.captured == 9);
+
+        for (Move move : validMoves) {
+            board.playMove(move);
+            eval = -quiescence(board, -beta, -alpha, depth - 1);
+            board.unMove();
+
+            if (eval >= beta) {
+                return beta;
+            }
+            if (eval < alpha - 50) {
+                return alpha;
+            }
+            if (eval > alpha) {
+                alpha = eval;
+            }
+        }
+
+
+        return alpha;
+    }
+
+    private float negamax(Board board, float alpha, float beta, int depth) {
+        if (depth == 0 || !board.gameOngoing) {
+            return quiescence(board, alpha, beta, Math.max(depth, 2));
+        }
+
+        float eval;
+
+        for (Move move : board.validMoves()) {
+            board.playMove(move);
+            eval = -negamax(board, -beta, -alpha, depth - 1);
+            board.unMove();
+
+            if (eval > alpha) {
+                alpha = eval;
+            }
+            if (alpha >= beta) {
+                break;
+            }
+        }
+
+        return alpha;
+    }
+
+    public Pair<Float, Move> chooseMove(Board board) {
+        if (!board.gameOngoing) {
+            return null;
+        }
+
+        float eval;
+        Pair<Float, Move> bestMove = new Pair<>(Float.NEGATIVE_INFINITY, null);
+
+        for (Move move : givenMoves) {
+            board.playMove(move);
+            eval = -negamax(board, Float.NEGATIVE_INFINITY, Float.POSITIVE_INFINITY, 2);
+            board.unMove();
+
+            if (eval > bestMove.first) {
+                bestMove.first = eval;
+                bestMove.second = move;
+            }
+        }
+
+        return bestMove;
+    }
+
+    @Override
+    public void run() {
+        this.bestMove = chooseMove(evalBoard);
+    }
 }

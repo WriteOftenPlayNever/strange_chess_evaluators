@@ -2,6 +2,7 @@ package dev.wopn.realchess.components;
 
 import dev.wopn.realchess.Board;
 import dev.wopn.realchess.EvaluatorComponent;
+import dev.wopn.realchess.Piece;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -21,17 +22,11 @@ public class CentreDistanceComponent extends EvaluatorComponent {
             byte piece = board.board[index];
             int[] coords = Board.coordConversion(index);
 
-            float d = (float)  (Math.sqrt(Math.pow(coords[0] - 4, 2) + Math.pow(coords[1] - 4, 2)));
+            float d = (float) (Math.sqrt(Math.pow(coords[0] - 4, 2) + Math.pow(coords[1] - 4, 2)));
 
             if (piece == pieceType && d > wbest) {
-
-                System.out.println(d);
-
                 wbest = d;
             } else if ((piece == pieceType + 8) && d > bbest) {
-
-                System.out.println(d);
-
                 bbest = d;
             }
         }
@@ -39,9 +34,9 @@ public class CentreDistanceComponent extends EvaluatorComponent {
         return tuningValues[0] * (wbest - bbest);
     }
 
-    public static CentreDistanceComponent generate(byte pieceType) {
+    public static CentreDistanceComponent generate() {
         Random r = new Random();
-        return new CentreDistanceComponent(pieceType, new int[] {},
+        return new CentreDistanceComponent(Piece.random(), new int[] {},
                 new float[] {(r.nextFloat() * 100) - 50});
     }
 

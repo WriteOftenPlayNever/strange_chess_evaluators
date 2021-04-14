@@ -5,6 +5,7 @@ import dev.wopn.realchess.EvaluatorComponent;
 import dev.wopn.realchess.Move;
 import dev.wopn.realchess.Piece;
 
+import java.util.Arrays;
 import java.util.Random;
 
 public class HistoryCountComponent extends EvaluatorComponent {
@@ -28,9 +29,17 @@ public class HistoryCountComponent extends EvaluatorComponent {
         return tuningValues[0] * count;
     }
 
-    public static HistoryCountComponent generate(byte pieceType) {
-        return new HistoryCountComponent(pieceType, new int[] {},
-                new float[] {(new Random().nextFloat() * 20) - 10});
+    public static HistoryCountComponent generate() {
+        return new HistoryCountComponent(Piece.random(), new int[] {},
+                new float[] {(new Random().nextFloat() * 100) - 50});
     }
 
+    @Override
+    public String toString() {
+        return "HistoryCountComponent{" +
+                "pieceType=" + pieceType +
+                ", pieceValues=" + Arrays.toString(pieceValues) +
+                ", tuningValues=" + Arrays.toString(tuningValues) +
+                '}';
+    }
 }

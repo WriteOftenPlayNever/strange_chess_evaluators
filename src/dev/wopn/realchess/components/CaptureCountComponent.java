@@ -5,6 +5,7 @@ import dev.wopn.realchess.EvaluatorComponent;
 import dev.wopn.realchess.Move;
 import dev.wopn.realchess.Piece;
 
+import java.util.Arrays;
 import java.util.Random;
 
 public class CaptureCountComponent extends EvaluatorComponent {
@@ -30,8 +31,17 @@ public class CaptureCountComponent extends EvaluatorComponent {
         return tuningValues[0] * count;
     }
 
-    public static CaptureCountComponent generate(byte pieceType) {
-        return new CaptureCountComponent(pieceType, new int[] {},
-                new float[] {(new Random().nextFloat() * 200) - 100});
+    public static CaptureCountComponent generate() {
+        return new CaptureCountComponent(Piece.random(), new int[] {},
+                new float[] {(new Random().nextFloat() * 300) - 150});
+    }
+
+    @Override
+    public String toString() {
+        return "CaptureCountComponent{" +
+                "pieceType=" + pieceType +
+                ", pieceValues=" + Arrays.toString(pieceValues) +
+                ", tuningValues=" + Arrays.toString(tuningValues) +
+                '}';
     }
 }
