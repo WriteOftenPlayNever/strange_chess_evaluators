@@ -36,7 +36,7 @@ public class FavTilesValuesComponent extends EvaluatorComponent {
 
     public static FavTilesValuesComponent generate() {
         Random r = new Random();
-        int limit = r.nextInt(64);
+        int limit = r.nextInt(32);
         int[] tiles = new int[limit];
 
         for (int i = 1; i < limit; i++) {

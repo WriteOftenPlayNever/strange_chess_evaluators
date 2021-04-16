@@ -17,6 +17,11 @@ public class Oracle {
         }
     }
 
+    public void updateBoard(Board newBoard) {
+        for (Evaluator evaluator : ngram) {
+            evaluator.setEvalBoard(newBoard.clone());
+        }
+    }
 
     public Pair<Float, Move> bestMove() {
         boolean syzygy;

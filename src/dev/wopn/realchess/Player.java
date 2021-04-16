@@ -9,10 +9,12 @@ import java.util.Random;
 public class Player {
 
     private int id;
+    private int veterancy;
     private List<EvaluatorComponent> components = new ArrayList<>();
 
     public Player() {
         this.id = new Random().nextInt();
+        this.veterancy = 0;
         this.populate();
     }
 
@@ -28,16 +30,25 @@ public class Player {
         return id;
     }
 
+    public int getVeterancy() {
+        return veterancy;
+    }
+
+    public void incrementVeterancy() {
+        this.veterancy++;
+    }
+
     public void populate() {
         components.add(BasicComponent.generate());
-        for (int i = 0; i < new Random().nextInt(25) + 1; i++) {
+        int limit = new Random().nextInt(10) + 1;
+        for (int i = 0; i < limit; i++) {
             components.add(randomEC());
         }
     }
 
-    private EvaluatorComponent randomEC() {
+    public static EvaluatorComponent randomEC() {
         EvaluatorComponent retVal = null;
-        int selector = new Random().nextInt(17);
+        int selector = new Random().nextInt(24);
 
         switch (selector) {
             case 0 -> retVal = CentreDistanceComponent.generate();
@@ -57,6 +68,13 @@ public class Player {
             case 14 -> retVal = TilePopularityComponent.generate();
             case 15 -> retVal = AvoidanceComponent.generate();
             case 16 -> retVal = CohesionComponent.generate();
+            case 17 -> retVal = MobilityComponent.generate();
+            case 18 -> retVal = AttackCountComponent.generate();
+            case 19 -> retVal = AttackValueComponent.generate();
+            case 20 -> retVal = AttackSpecificComponent.generate();
+            case 21 -> retVal = DefendCountComponent.generate();
+            case 22 -> retVal = DefendValueComponent.generate();
+            case 23 -> retVal = DefendSpecificComponent.generate();
         }
 
         return retVal;
@@ -66,6 +84,7 @@ public class Player {
     public String toString() {
         return "Player{" +
                 "id=" + id +
+                ", veterancy=" + veterancy +
                 ", components=" + components +
                 '}';
     }

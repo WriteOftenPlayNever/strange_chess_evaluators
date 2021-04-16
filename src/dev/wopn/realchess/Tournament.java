@@ -2,10 +2,7 @@ package dev.wopn.realchess;
 
 import dev.wopn.realchess.components.BasicComponent;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class Tournament {
 
@@ -21,10 +18,15 @@ public class Tournament {
         }
     }
 
-    private Pair<Player, Float> runGame(Player player1, Player player2) {
+    private String runGame(Player player1, Player player2) {
         Board gameBoard = new Board();
         gameBoard.initialise();
         int ply = 0;
+
+        // Players are deterministic, so we give them a random starting position to work from
+        Random r = new Random();
+        gameBoard.playMove(gameBoard.validMoves().get(r.nextInt(20)));
+        gameBoard.playMove(gameBoard.validMoves().get(r.nextInt(20)));
 
         for (; ply < 100 && gameBoard.gameOngoing; ply++) {
             Move chosenMove;
@@ -53,7 +55,9 @@ public class Tournament {
         playerScores.put(player1, player1Score);
         playerScores.put(player2, player2Score);
 
-        return new Pair<>(player1Score > player2Score ? player1 : player2, Math.max(player1Score, player2Score));
+        return "Player " + (result > 0 ? player1.getId() : player2.getId()) + " beat " +
+                (result > 0 ? player2.getId() : player1.getId()) +
+                " in " + ply + " moves and now scores " + (result > 0 ? player1Score : player2Score);
     }
 
 
@@ -65,14 +69,9 @@ public class Tournament {
             playerScores.put(player, 0.0f);
         }
 
-        // Make sure each player plays at least once
-        for (int playerIndex = 0; playerIndex < 50; playerIndex++) {
-            System.out.println(runGame(playerArray[playerIndex], playerArray[r.nextInt(50)]));
-        }
-
-        // Run another 169 random games
-        for (int i = 0; i < 169; i++) {
-            System.out.println(runGame(playerArray[r.nextInt(50)], playerArray[r.nextInt(50)]));
+        // Make sure each player plays at least twice
+        for (int playerIndex = 0; playerIndex < 100; playerIndex++) {
+            System.out.println(runGame(playerArray[playerIndex % 50], playerArray[r.nextInt(50)]));
         }
 
         // GET AVERAGE SCORE
@@ -85,6 +84,7 @@ public class Tournament {
         // Name and shame failed players
         List<Integer> failedPlayers = new ArrayList<>();
         for (Player player : playerScores.keySet()) {
+            player.incrementVeterancy();
             if (playerScores.get(player) < average) {
                 failedPlayers.add(player.getId());
             }
@@ -101,6 +101,16 @@ public class Tournament {
 
 
         return playerArray;
+    }
+
+    public void runForever() {
+        for (int i = 0; i < 20; i++) {
+            for (Player player : runTournament()) {
+                if (player.getVeterancy() > 0) {
+                    System.out.println(player);
+                }
+            }
+        }
     }
 
 }

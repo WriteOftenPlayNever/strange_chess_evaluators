@@ -18,6 +18,7 @@ public class Evaluator implements Runnable {
 
     public void setEvalBoard(Board evalBoard) {
         this.evalBoard = evalBoard;
+        this.givenMoves = new ArrayList<>();
     }
 
     public Board getEvalBoard() {
