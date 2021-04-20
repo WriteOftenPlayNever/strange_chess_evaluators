@@ -61,7 +61,7 @@ public class EnemyAdjCountComponent extends EvaluatorComponent {
     }
 
     public static EnemyAdjCountComponent generate() {
-        return new EnemyAdjCountComponent(Piece.random(), new int[] {},
+        return new EnemyAdjCountComponent(Piece.random(), null,
                 new float[] {(new Random().nextFloat() * 200) - 100});
     }
 

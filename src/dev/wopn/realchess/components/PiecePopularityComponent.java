@@ -45,7 +45,7 @@ public class PiecePopularityComponent extends EvaluatorComponent {
             tuningValues[i] = ((r.nextFloat() * 100) - 50);
         }
 
-        return new PiecePopularityComponent((byte) 0, new int[] {}, tuningValues, targetPieces);
+        return new PiecePopularityComponent((byte) 0, null, tuningValues, targetPieces);
     }
 
     @Override

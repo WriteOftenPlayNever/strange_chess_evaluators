@@ -42,6 +42,15 @@ public class Board {
         board[move.from] = (byte) 0;
         historyList.add(move);
         plies++;
+
+        if (move.flag == 1) {
+
+        } else if (move.flag == 2) {
+            board[move.to] = move.moved > 8 ? (byte) 13 : (byte) 5;
+        } else if (move.flag == 4) {
+            board[historyList.get(historyList.size() - 2).to] = (byte) 0;
+        }
+
         if (move.captured == 6 || move.captured == 14) {
             gameOngoing = false;
         }
@@ -53,6 +62,14 @@ public class Board {
         board[unMove.to] = unMove.captured;
         board[unMove.from] = unMove.moved;
         plies--;
+
+        if (unMove.flag == 1) {
+
+        } else if (unMove.flag == 4) {
+            Move push = historyList.get(historyList.size() - 1);
+            board[push.to] = push.moved;
+        }
+
         if (unMove.captured == 6 || unMove.captured == 14) {
             gameOngoing = true;
         }
@@ -77,7 +94,7 @@ public class Board {
         return moves;
     }
 
-    public MADCollection getMAD() {
+    public MADCollection getMAD()    {
         return MAD;
     }
 
@@ -95,7 +112,11 @@ public class Board {
                     boolean isPush = (coords[0] - coordConversion(targetIndex)[0]) == 2;
 
                     if (target == 0) {
-                        MAD.moveList.add(new Move(index, targetIndex, piece, target, isPush ? (byte) 3 : (byte) 0));
+                        if (coords[1] == 1) {
+                            MAD.moveList.add(new Move(index, targetIndex, piece, target, (byte) 2));
+                        } else {
+                            MAD.moveList.add(new Move(index, targetIndex, piece, target, isPush ? (byte) 3 : (byte) 0));
+                        }
                     } else {
                         break;
                     }
@@ -107,9 +128,20 @@ public class Board {
                     Move move = new Move(index, targetIndex, piece, target, (byte) 0);
 
                     if (target > 8) {
-                        MAD.attackList.add(move);
+                        if (coords[1] == 1) {
+                            MAD.attackList.add(new Move(index, targetIndex, piece, target, (byte) 2));
+                        } else {
+                            MAD.attackList.add(move);
+                        }
                     } else if (target < 8 && target > 0) {
                         MAD.defendList.add(move);
+                    } else if (target == 0 && coords[0] == 3) {
+                        Move lastMove = historyList.get(historyList.size() - 1);
+                        boolean wasPush = lastMove.flag == 3;
+                        boolean correctColumn = coordConversion(targetIndex)[1] == coordConversion(lastMove.from)[1];
+                        if (wasPush && correctColumn) {
+                            MAD.attackList.add(new Move(index, targetIndex, piece, target, (byte) 4));
+                        }
                     }
                 }
             }
@@ -119,7 +151,11 @@ public class Board {
                     boolean isPush = (coordConversion(targetIndex)[0] - coords[0]) == 2;
 
                     if (target == 0) {
-                        MAD.moveList.add(new Move(index, targetIndex, piece, target, isPush ? (byte) 3 : (byte) 0));
+                        if (coords[1] == 6) {
+                            MAD.moveList.add(new Move(index, targetIndex, piece, target, (byte) 2));
+                        } else {
+                            MAD.moveList.add(new Move(index, targetIndex, piece, target, isPush ? (byte) 3 : (byte) 0));
+                        }
                     } else {
                         break;
                     }
@@ -130,9 +166,20 @@ public class Board {
                     Move move = new Move(index, targetIndex, piece, target, (byte) 0);
 
                     if ((target != 0) && (target < 8)) {
-                        MAD.attackList.add(move);
+                        if (coords[1] == 6) {
+                            MAD.attackList.add(new Move(index, targetIndex, piece, target, (byte) 2));
+                        } else {
+                            MAD.attackList.add(move);
+                        }
                     } else if (target > 8) {
                         MAD.defendList.add(move);
+                    } else if (target == 0 && coords[0] == 4) {
+                        Move lastMove = historyList.get(historyList.size() - 1);
+                        boolean wasPush = lastMove.flag == 3;
+                        boolean correctColumn = coordConversion(targetIndex)[1] == coordConversion(lastMove.from)[1];
+                        if (wasPush && correctColumn) {
+                            MAD.attackList.add(new Move(index, targetIndex, piece, target, (byte) 4));
+                        }
                     }
                 }
             }

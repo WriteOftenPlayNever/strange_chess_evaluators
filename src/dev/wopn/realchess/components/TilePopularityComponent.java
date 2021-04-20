@@ -36,7 +36,7 @@ public class TilePopularityComponent extends EvaluatorComponent {
     }
 
     public static TilePopularityComponent generate() {
-        return new TilePopularityComponent(Piece.random(), new int[] {},
+        return new TilePopularityComponent(Piece.random(), null,
                 new float[] {new Random().nextFloat()});
     }
 

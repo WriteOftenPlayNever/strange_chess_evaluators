@@ -57,7 +57,7 @@ public class AvoidanceComponent extends EvaluatorComponent {
     }
 
     public static AvoidanceComponent generate() {
-        return new AvoidanceComponent(Piece.random(), new int[] {},
+        return new AvoidanceComponent(Piece.random(), null,
                 new float[] {(new Random().nextFloat() * 200) - 100},
                 Piece.random());
     }

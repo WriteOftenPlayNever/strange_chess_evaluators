@@ -32,7 +32,7 @@ public class CaptureCountComponent extends EvaluatorComponent {
     }
 
     public static CaptureCountComponent generate() {
-        return new CaptureCountComponent(Piece.random(), new int[] {},
+        return new CaptureCountComponent(Piece.random(), null,
                 new float[] {(new Random().nextFloat() * 300) - 150});
     }
 

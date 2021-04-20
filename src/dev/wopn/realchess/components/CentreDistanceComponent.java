@@ -36,7 +36,7 @@ public class CentreDistanceComponent extends EvaluatorComponent {
 
     public static CentreDistanceComponent generate() {
         Random r = new Random();
-        return new CentreDistanceComponent(Piece.random(), new int[] {},
+        return new CentreDistanceComponent(Piece.random(), null,
                 new float[] {(r.nextFloat() * 100) - 50});
     }
 

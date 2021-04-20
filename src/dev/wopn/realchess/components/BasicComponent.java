@@ -33,7 +33,7 @@ public class BasicComponent extends EvaluatorComponent {
         return new BasicComponent((byte) 0, new int[] {0, r.nextInt(1001), r.nextInt(1001),
                 r.nextInt(1001), r.nextInt(1001),
                 r.nextInt(1001), 20000},
-                new float[] {});
+                null);
     }
 
     @Override

@@ -30,7 +30,7 @@ public class HistoryCountComponent extends EvaluatorComponent {
     }
 
     public static HistoryCountComponent generate() {
-        return new HistoryCountComponent(Piece.random(), new int[] {},
+        return new HistoryCountComponent(Piece.random(), null,
                 new float[] {(new Random().nextFloat() * 100) - 50});
     }
 

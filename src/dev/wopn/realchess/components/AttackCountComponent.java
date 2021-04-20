@@ -30,7 +30,7 @@ public class AttackCountComponent extends EvaluatorComponent {
     }
 
     public static AttackCountComponent generate() {
-        return new AttackCountComponent(Piece.random(), new int[] {},
+        return new AttackCountComponent(Piece.random(), null,
                 new float[] {(new Random().nextFloat() * 100.0f) - 50.0f});
     }
 

@@ -28,7 +28,7 @@ public class Tournament {
         gameBoard.playMove(gameBoard.validMoves().get(r.nextInt(20)));
         gameBoard.playMove(gameBoard.validMoves().get(r.nextInt(20)));
 
-        for (; ply < 100 && gameBoard.gameOngoing; ply++) {
+        for (; ply < 98 && gameBoard.gameOngoing; ply++) {
             Move chosenMove;
             Oracle oracle;
 
@@ -45,7 +45,7 @@ public class Tournament {
 
         float result = new BasicComponent((byte)0,new int[]{0,0,0,0,0,0,20000},new float[]{}).evaluate(gameBoard);
 
-        float speedFactor = ((100.0f - ply) / 100.0f);
+        float speedFactor = ((75.0f - ply) / 100.0f);
         float player1Score = playerScores.get(player1);
         float player2Score = playerScores.get(player2);
 
@@ -104,7 +104,7 @@ public class Tournament {
     }
 
     public void runForever() {
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 100; i++) {
             for (Player player : runTournament()) {
                 if (player.getVeterancy() > 0) {
                     System.out.println(player);

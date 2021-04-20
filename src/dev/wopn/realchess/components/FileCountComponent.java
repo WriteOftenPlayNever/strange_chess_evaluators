@@ -44,7 +44,7 @@ public class FileCountComponent extends EvaluatorComponent {
 
     public static FileCountComponent generate() {
         Random r = new Random();
-        return new FileCountComponent(Piece.random(), new int[] {},
+        return new FileCountComponent(Piece.random(), null,
                 new float[] {(r.nextFloat() * 300) - 150},
                 (byte) (r.nextInt(6) + (r.nextBoolean() ? 9 : 1)));
     }

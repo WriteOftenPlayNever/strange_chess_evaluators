@@ -34,8 +34,8 @@ public class AttackSpecificComponent extends EvaluatorComponent {
 
     public static AttackSpecificComponent generate() {
         Random r = new Random();
-        return new AttackSpecificComponent(Piece.random(), new int[] {},
-                new float[] {(r.nextFloat() * 4.0f) - 2.0f}, (byte) (r.nextInt(6) + 9));
+        return new AttackSpecificComponent(Piece.random(), null,
+                new float[] {(r.nextFloat() * 300.0f) - 150.0f}, (byte) (r.nextInt(6) + 9));
     }
 
     @Override

@@ -44,7 +44,7 @@ public class DiagonalCountComponent extends EvaluatorComponent {
 
     public static DiagonalCountComponent generate() {
         Random r = new Random();
-        return new DiagonalCountComponent(Piece.random(), new int[] {},
+        return new DiagonalCountComponent(Piece.random(), null,
                 new float[] {(r.nextFloat() * 300) - 150},
                 (byte) (r.nextInt(6) + (r.nextBoolean() ? 9 : 1)));
     }

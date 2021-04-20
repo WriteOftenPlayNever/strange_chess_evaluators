@@ -30,7 +30,7 @@ public class MobilityComponent extends EvaluatorComponent {
     }
 
     public static MobilityComponent generate() {
-        return new MobilityComponent(Piece.random(), new int[] {},
+        return new MobilityComponent(Piece.random(), null,
                 new float[] {(new Random().nextFloat() * 40.0f) - 20.0f});
     }
 

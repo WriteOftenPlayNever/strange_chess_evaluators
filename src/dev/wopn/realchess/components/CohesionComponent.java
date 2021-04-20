@@ -57,7 +57,7 @@ public class CohesionComponent extends EvaluatorComponent {
     }
 
     public static CohesionComponent generate() {
-        return new CohesionComponent(Piece.random(), new int[] {},
+        return new CohesionComponent(Piece.random(), null,
                 new float[] {(new Random().nextFloat() * 200) - 100},
                 Piece.random());
     }

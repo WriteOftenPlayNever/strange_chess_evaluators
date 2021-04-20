@@ -61,7 +61,7 @@ public class AllyAdjCountComponent extends EvaluatorComponent {
     }
 
     public static AllyAdjCountComponent generate() {
-        return new AllyAdjCountComponent(Piece.random(), new int[] {},
+        return new AllyAdjCountComponent(Piece.random(), null,
                 new float[] {(new Random().nextFloat() * 200) - 100});
     }
 

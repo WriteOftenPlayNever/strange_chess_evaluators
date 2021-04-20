@@ -30,7 +30,7 @@ public class DefendCountComponent extends EvaluatorComponent {
     }
 
     public static DefendCountComponent generate() {
-        return new DefendCountComponent(Piece.random(), new int[] {},
+        return new DefendCountComponent(Piece.random(), null,
                 new float[] {(new Random().nextFloat() * 100.0f) - 50.0f});
     }
 

@@ -45,7 +45,7 @@ public class RankCountComponent extends EvaluatorComponent {
 
     public static RankCountComponent generate() {
         Random r = new Random();
-        return new RankCountComponent(Piece.random(), new int[] {},
+        return new RankCountComponent(Piece.random(), null,
                 new float[] {(r.nextFloat() * 300) - 150},
                 (byte) (r.nextInt(6) + (r.nextBoolean() ? 9 : 1)));
     }

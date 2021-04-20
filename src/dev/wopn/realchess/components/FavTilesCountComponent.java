@@ -44,7 +44,7 @@ public class FavTilesCountComponent extends EvaluatorComponent {
 
         return new FavTilesCountComponent(
                 Piece.random(),
-                new int[] {},
+                null,
                 new float[] {(r.nextFloat() * 300) - 150},
                 tiles
         );

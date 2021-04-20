@@ -22,7 +22,7 @@ public class PlyCountComponent extends EvaluatorComponent {
     }
 
     public static PlyCountComponent generate() {
-        return new PlyCountComponent((byte) 0, new int[] {},
+        return new PlyCountComponent((byte) 0, null,
                 new float[] {(new Random().nextFloat() * 10) - 5},
                 Player.randomEC());
     }
