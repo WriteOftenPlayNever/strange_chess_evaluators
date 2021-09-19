@@ -35,10 +35,10 @@ public class FavTilesCountComponent extends EvaluatorComponent {
 
     public static FavTilesCountComponent generate() {
         Random r = new Random();
-        int limit = r.nextInt(32);
+        int limit = r.nextInt(31) + 1;
         int[] tiles = new int[limit];
 
-        for (int i = 1; i < limit; i++) {
+        for (int i = 0; i < limit; i++) {
             tiles[i] = r.nextInt(64);
         }
 

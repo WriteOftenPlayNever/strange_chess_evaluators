@@ -6,14 +6,26 @@ import java.util.*;
 
 public class Tournament {
 
+    private static final int playerCount = 45;
     private Player[] playerArray;
     private HashMap<Player, Float> playerScores;
 
     public Tournament() {
-        this.playerArray = new Player[50];
+        this.playerArray = new Player[playerCount];
         this.playerScores = new HashMap<>();
 
         for (int i = 0; i < this.playerArray.length; i++) {
+            this.playerArray[i] = new Player();
+        }
+    }
+
+    public Tournament(Player starPlayer) {
+        this.playerArray = new Player[playerCount];
+        this.playerScores = new HashMap<>();
+
+        playerArray[0] = starPlayer;
+
+        for (int i = 1; i < this.playerArray.length; i++) {
             this.playerArray[i] = new Player();
         }
     }
@@ -28,14 +40,20 @@ public class Tournament {
         gameBoard.playMove(gameBoard.validMoves().get(r.nextInt(20)));
         gameBoard.playMove(gameBoard.validMoves().get(r.nextInt(20)));
 
-        for (; ply < 98 && gameBoard.gameOngoing; ply++) {
+        // Conjure forth the oracles!
+        Oracle p1oracle = new Oracle(11, player1.getComponents(), gameBoard);
+        Oracle p2oracle = new Oracle(11, player2.getComponents(), gameBoard);
+
+        for (; ply < 80 && gameBoard.gameOngoing; ply++) {
             Move chosenMove;
             Oracle oracle;
 
             if (ply % 2 == 0) {
-                oracle = new Oracle(9, player1.getComponents(), gameBoard);
+                p1oracle.updateBoard(gameBoard);
+                oracle = p1oracle;
             } else {
-                oracle = new Oracle(9, player2.getComponents(), gameBoard);
+                p2oracle.updateBoard(gameBoard);
+                oracle = p2oracle;
             }
 
             chosenMove = oracle.bestMove().second;
@@ -60,9 +78,41 @@ public class Tournament {
                 " in " + ply + " moves and now scores " + (result > 0 ? player1Score : player2Score);
     }
 
+    public static long runGameRecyledOracles(int oracles, Player player1, Player player2) {
+        long date = new Date().getTime();
+        Board gameBoard = new Board();
+        gameBoard.initialise();
+        int ply = 0;
+
+
+        // Conjure forth the oracles!
+        Oracle p1oracle = new Oracle(oracles, player1.getComponents(), gameBoard);
+        Oracle p2oracle = new Oracle(oracles, player2.getComponents(), gameBoard);
+
+        for (; ply < 100 && gameBoard.gameOngoing; ply++) {
+            Move chosenMove;
+            Oracle oracle;
+
+            if (ply % 2 == 0) {
+                p1oracle.updateBoard(gameBoard);
+                oracle = p1oracle;
+            } else {
+                p2oracle.updateBoard(gameBoard);
+                oracle = p2oracle;
+            }
+
+            chosenMove = oracle.bestMove().second;
+
+            gameBoard.playMove(chosenMove);
+        }
+
+        return new Date().getTime() - date;
+    }
+
 
     public Player[] runTournament() {
         Random r = new Random();
+        playerScores = new HashMap<>();
 
         // Initialise scores at 0.0f
         for (Player player : this.playerArray) {
@@ -70,8 +120,8 @@ public class Tournament {
         }
 
         // Make sure each player plays at least twice
-        for (int playerIndex = 0; playerIndex < 100; playerIndex++) {
-            System.out.println(runGame(playerArray[playerIndex % 50], playerArray[r.nextInt(50)]));
+        for (int playerIndex = 0; playerIndex < (playerCount * 2); playerIndex++) {
+            runGame(playerArray[playerIndex % playerCount], playerArray[r.nextInt(playerCount)]);
         }
 
         // GET AVERAGE SCORE
@@ -79,14 +129,20 @@ public class Tournament {
         for (float score : playerScores.values()) {
             average += score;
         }
-        average /= playerArray.length;
+        average /= playerCount;
 
         // Name and shame failed players
+        // Also check if anyone made the leaderboards
+        int bestVeterancy = -1;
         List<Integer> failedPlayers = new ArrayList<>();
         for (Player player : playerScores.keySet()) {
             player.incrementVeterancy();
+            bestVeterancy = Math.max(player.getVeterancy(), bestVeterancy);
+
             if (playerScores.get(player) < average) {
                 failedPlayers.add(player.getId());
+            } else if (player.getVeterancy() > 9) {
+                Leaderboard.INSTANCE.addPlayer(player);
             }
         }
 
@@ -95,21 +151,20 @@ public class Tournament {
             if (failedPlayers.contains(playerArray[i].getId())) {
                 playerScores.remove(playerArray[i]);
 
+                // Replace with newly hatched player
                 playerArray[i] = new Player();
             }
         }
 
-
+        System.out.println("Best current veterancy is: " + bestVeterancy);
         return playerArray;
     }
 
     public void runForever() {
-        for (int i = 0; i < 100; i++) {
-            for (Player player : runTournament()) {
-                if (player.getVeterancy() > 0) {
-                    System.out.println(player);
-                }
-            }
+        for (int i = 1; true; i++) {
+            runTournament();
+            Leaderboard.INSTANCE.saveLeaderboards();
+            System.out.println("Tournament " + i + " complete.");
         }
     }
 

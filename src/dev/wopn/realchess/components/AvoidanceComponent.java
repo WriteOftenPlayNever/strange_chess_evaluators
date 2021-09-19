@@ -25,17 +25,17 @@ public class AvoidanceComponent extends EvaluatorComponent {
             int[] coords = Board.coordConversion(index);
 
             if (piece == pieceType) {
-                float cohesion = 0.0f;
+                float avoidance = 0.0f;
                 for (int targetIndex = 0; targetIndex < board.board.length; targetIndex++) {
                     if (board.board[targetIndex] == targetType) {
                         int[] target = Board.coordConversion(targetIndex);
                         float distance = (float) (Math.sqrt(Math.pow(coords[0] - target[0], 2) +
                                 Math.pow(coords[1] - target[1], 2)));
-                        cohesion = Math.max(distance, cohesion);
+                        avoidance = Math.max(distance, avoidance);
                     }
                 }
 
-                eval += tuningValues[0] * cohesion;
+                eval += tuningValues[0] * avoidance;
 
             } else if (piece == Piece.invert(pieceType)) {
                 float avoidance = 0.0f;

@@ -22,6 +22,12 @@ public class Player {
         this.components = components;
     }
 
+    public Player(int id, int veterancy, List<EvaluatorComponent> components) {
+        this.id = id;
+        this.veterancy = veterancy;
+        this.components = components;
+    }
+
     public List<EvaluatorComponent> getComponents() {
         return components;
     }

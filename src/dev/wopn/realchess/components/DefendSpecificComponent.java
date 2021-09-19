@@ -35,7 +35,7 @@ public class DefendSpecificComponent extends EvaluatorComponent {
     public static DefendSpecificComponent generate() {
         Random r = new Random();
         return new DefendSpecificComponent(Piece.random(), null,
-                new float[] {(r.nextFloat() * 300.0f) - 150.0f}, (byte) (r.nextInt(6) + 9));
+                new float[] {(r.nextFloat() * 300.0f) - 150.0f}, (byte) (r.nextInt(5) + 1));
     }
 
     @Override

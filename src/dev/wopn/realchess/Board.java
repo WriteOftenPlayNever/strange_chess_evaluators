@@ -44,7 +44,14 @@ public class Board {
         plies++;
 
         if (move.flag == 1) {
-
+            boolean right = (move.to - move.from) > 0;
+            if (right) {
+                board[move.to - 1] = board[move.to + 1];
+                board[move.to + 1] = (byte) 0;
+            } else {
+                board[move.to + 1] = board[move.to - 2];
+                board[move.to - 2] = (byte) 0;
+            }
         } else if (move.flag == 2) {
             board[move.to] = move.moved > 8 ? (byte) 13 : (byte) 5;
         } else if (move.flag == 4) {
@@ -64,7 +71,14 @@ public class Board {
         plies--;
 
         if (unMove.flag == 1) {
-
+            boolean right = (unMove.to - unMove.from) > 0;
+            if (right) {
+                board[unMove.to + 1] = board[unMove.to - 1];
+                board[unMove.to - 1] = (byte) 0;
+            } else {
+                board[unMove.to - 2] = board[unMove.to + 1];
+                board[unMove.to + 1] = (byte) 0;
+            }
         } else if (unMove.flag == 4) {
             Move push = historyList.get(historyList.size() - 1);
             board[push.to] = push.moved;
@@ -112,7 +126,7 @@ public class Board {
                     boolean isPush = (coords[0] - coordConversion(targetIndex)[0]) == 2;
 
                     if (target == 0) {
-                        if (coords[1] == 1) {
+                        if (coords[0] == 1) {
                             MAD.moveList.add(new Move(index, targetIndex, piece, target, (byte) 2));
                         } else {
                             MAD.moveList.add(new Move(index, targetIndex, piece, target, isPush ? (byte) 3 : (byte) 0));
@@ -128,7 +142,7 @@ public class Board {
                     Move move = new Move(index, targetIndex, piece, target, (byte) 0);
 
                     if (target > 8) {
-                        if (coords[1] == 1) {
+                        if (coords[0] == 1) {
                             MAD.attackList.add(new Move(index, targetIndex, piece, target, (byte) 2));
                         } else {
                             MAD.attackList.add(move);
@@ -151,7 +165,7 @@ public class Board {
                     boolean isPush = (coordConversion(targetIndex)[0] - coords[0]) == 2;
 
                     if (target == 0) {
-                        if (coords[1] == 6) {
+                        if (coords[0] == 6) {
                             MAD.moveList.add(new Move(index, targetIndex, piece, target, (byte) 2));
                         } else {
                             MAD.moveList.add(new Move(index, targetIndex, piece, target, isPush ? (byte) 3 : (byte) 0));
@@ -166,7 +180,7 @@ public class Board {
                     Move move = new Move(index, targetIndex, piece, target, (byte) 0);
 
                     if ((target != 0) && (target < 8)) {
-                        if (coords[1] == 6) {
+                        if (coords[0] == 6) {
                             MAD.attackList.add(new Move(index, targetIndex, piece, target, (byte) 2));
                         } else {
                             MAD.attackList.add(move);
@@ -255,6 +269,38 @@ public class Board {
                 }
             }
             else if (piece == 6 || piece == 14) {
+                boolean kingNotMoved = true;
+                boolean leftHistory = true;
+                boolean rightHistory = true;
+                for (Move move : historyList) {
+                    if (move.moved == piece) {
+                        kingNotMoved = false;
+                    }
+                    if (move.from == index - 4) {
+                        leftHistory = false;
+                    }
+                    if (move.from == index + 3) {
+                        rightHistory = false;
+                    }
+                }
+
+                if (kingNotMoved) {
+                    boolean leftEmpty;
+                    boolean rightEmpty;
+                    leftEmpty = (board[index - 1] == 0 &&
+                            board[index - 2] == 0 &&
+                            board[index - 3] == 0);
+                    rightEmpty = (board[index + 1] == 0 &&
+                            board[index + 2] == 0);
+
+                    if (leftEmpty && leftHistory) {
+                        MAD.moveList.add(new Move(index, (byte) (index - 2), piece, (byte) 0, (byte) 1));
+                    }
+                    if (rightEmpty && rightHistory) {
+                        MAD.moveList.add(new Move(index, (byte) (index + 2), piece, (byte) 0, (byte) 1));
+                    }
+                }
+
                 for (int x = -1; x < 2; x++) {
                     for (int y = -1; y < 2; y++) {
                         int[] target = {coords[0] + x, coords[1] + y};
